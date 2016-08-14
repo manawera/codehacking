@@ -1,0 +1,191 @@
+Git
+---
+$ git init
+
+
+
+Vitual Host
+--
+Permission Folder
+chmod -R o+w codehacking/storage/
+
+
+php artisan make:model Role
+
+edit user migration
+edit role migration
+
+make relation role in User.php
+
+add database role
+- administrator
+- author
+- subscriber
+
+Register User
+edit role_id = 1, is_active = 1
+
+
+
+Admin controller and routes
+---
+// Manual Route
+Route::resource('admin/users', 'AdminUsersController');
+
+$ php artisan make:controller --resource AdminUsersController
+
+
+
+
+Testing methods
+---
+$ php artisan route:list
+tes http://codehacking.dev/admin/users
+
+AdminUsersController.php
+--
+public function index()
+{
+    return view('admin.users.index');
+}
+
+
+
+
+
+Installing Nodejs and fies download
+---
+node -v
+
+$ sudo npm install --global gulp
+or
+$ sudo npm install --global gulp-cli
+
+cp asset file
+css to resources/assets
+js to resources/assets
+font to public/
+
+
+
+Gulp and assets
+---
+Install node_modules folder
+$ npm install
+
+
+gulpfile.js
+--
+elixir(function(mix) {
+    mix.sass('app.scss')
+
+        .styles([
+            'libs/blog-post.css',
+            'libs/bootstrap.css',
+            'libs/font-awesome.css',
+            'libs/metisMenu.css',
+            'libs/sb-admin-2.css'
+        ], './public/css/libs.css')
+
+        .scripts([
+            'libs/jquery.js',
+            'libs/bootstrap.js',
+            'libs/metisMenu.js',
+            'libs/sb-admin-2.js',
+            'libs/scripts.js'
+        ], './public/js/libs.js')
+
+});
+
+
+$ gulp
+[15:17:45] gulp-notify: [Laravel Elixir] Scripts Merged!
+[15:17:45] Finished 'scripts' after 1.31 s
+
+
+
+
+Admin master file -download file
+---
+new blade
+/view/admin/index.blade.php
+/view/admin/categories/
+/view/admin/posts/
+/view/admin/users/
+/view/layouts/admin.blade.php
+copy admin template to this
+
+
+routes.php
+--
+Route::get('/admin', function () {
+   return view('admin.index');
+});
+
+
+resources/assets/sass/app.scss
+--
+#admin-page {
+  padding-top:0px;
+}
+
+$ gulp
+
+
+
+
+
+Version control and modifying master page
+---
+
+
+Displaying users
+---
+
+
+
+Create page
+---
+
+
+Laravel collective html package
+---
+
+
+
+Testing form and creating form fields
+---
+
+
+
+working on user form status field
+---
+
+
+
+Working on user form status field
+---
+
+
+
+Populating the user roles select
+---
+
+
+
+Password field and custom request
+---
+
+
+
+Displaying errors and including with blade
+---
+
+
+
+Adding upload file feature to form
+---
+
+
+
+
