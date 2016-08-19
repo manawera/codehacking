@@ -112,8 +112,10 @@ new blade
 /view/admin/categories/
 /view/admin/posts/
 /view/admin/users/
+
 /view/layouts/admin.blade.php
-copy admin template to this
+/view/admin/index.blade.php
+copy admin template to 2 files
 
 
 routes.php
@@ -123,6 +125,10 @@ Route::get('/admin', function () {
 });
 
 
+
+
+Version control and modifying master page
+---
 resources/assets/sass/app.scss
 --
 #admin-page {
@@ -134,22 +140,184 @@ $ gulp
 
 
 
-
-Version control and modifying master page
----
-
-
 Displaying users
 ---
+views/admin/users/index.blade.php
+--
+@extends("layouts.admin")
+@section("content")
+    <h1>Users</h1>
+@stop
+
+// add Editor > Live Template
+Preferences > Editor > Live Templates
+user > table
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+    </tbody>
+</table>
+
+
+AdminUsersController.php
+--
+use App\User;
+
+public function index()
+{
+    $users = User::all();
+    return view('admin.users.index', compact('users'));
+}
+
+
+admin/users/index.blade.php
+--
+@extends("layouts.admin")
+
+@section("content")
+
+    <h1>Users</h1>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+              <th>Role</th> //
+              <th>Active</th> //
+              <th>Created</th>
+              <th>Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        @if($users)
+            @foreach($users as $user)
+                <tr>
+                    <td>{{$user->id}}</td>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->role->name}}</td> //
+                    <td>{{$user->is_active == 1 ? 'Active' : 'Not Active'}}</td> //
+                    <td>{{$user->created_at->diffForHumans()}}</td>
+                    <td>{{$user->updated_at->diffForHumans()}}</td>
+                </tr>
+            @endforeach
+        @endif
+
+        </tbody>
+    </table>
+
+@stop
+
+
 
 
 
 Create page
 ---
+view/admin/users/create.blade.php
+--
+@extends("layouts.admin")
+
+@section("content")
+
+    <h1>Create Users</h1>
+
+@stop
+
+// http://codehacking.dev/admin/users/create
+
+
+
 
 
 Laravel collective html package
 ---
+$ composer require laravelcollective/html
+
+
+Next, add your new provider to the providers array of config/app.php:
+
+  'providers' => [
+    // ...
+    Collective\Html\HtmlServiceProvider::class,
+    // ...
+  ],
+
+
+Finally, add two class aliases to the aliases array of config/app.php:
+
+  'aliases' => [
+    // ...
+      'Form' => Collective\Html\FormFacade::class,
+      'Html' => Collective\Html\HtmlFacade::class,
+    // ...
+  ],
+
+
+views/admin/users/create.blade.php
+--
+@extends("layouts.admin")
+
+@section("content")
+
+    <h1>Create Users</h1>
+
+    {!! Form::open(['method'=>'POST', 'action'=>'AdminUsersController@store']) !!}
+
+        <div class="form-group">
+            {!! Form::label('name', 'Name:') !!}
+            {!! Form::text('name', null, ['class'=>'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('email', 'Email:') !!}
+            {!! Form::email('email', null, ['class'=>'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('role_id', 'Role:') !!}
+            {!! Form::text('role_id', null, ['class'=>'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('status', 'Status:') !!}
+            {!! Form::text('status', null, ['class'=>'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::submit('Create Post', ['class'=>'btn btn-primary']) !!}
+        </div>
+
+    {!! Form::close() !!}
+
+@stop
+
+
 
 
 
@@ -161,10 +329,6 @@ Testing form and creating form fields
 working on user form status field
 ---
 
-
-
-Working on user form status field
----
 
 
 
