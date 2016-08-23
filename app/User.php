@@ -31,4 +31,20 @@ class User extends Authenticatable
     public function photo() {
         return$this->belongsTo('App\Photo'); // one to one
     }
+
+    //public function setPasswordAttribute($password) section 27 lecture 213
+
+    public function isAdmin() {
+        if ($this->role->name == "administrator" && $this->is_active == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function posts() {
+        return $this->hasMany('App\Post'); // one to many
+    }
+
+
 }
